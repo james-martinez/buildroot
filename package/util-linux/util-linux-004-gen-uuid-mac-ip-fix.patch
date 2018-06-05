@@ -1,0 +1,19 @@
+--- util-linux-2.24.2/libuuid/src/gen_uuid.c.orig	2013-09-18 08:50:12.687263654 -0500
++++ util-linux-2.24.2/libuuid/src/gen_uuid.c	2017-08-08 15:01:24.617989974 -0500
+@@ -169,9 +169,13 @@
+ 		return -1;
+ 	}
+ 	n = ifc.ifc_len;
+-	for (i = 0; i < n; i+= ifreq_size(*ifrp) ) {
+-		ifrp = (struct ifreq *)((char *) ifc.ifc_buf+i);
+-		strncpy(ifr.ifr_name, ifrp->ifr_name, IFNAMSIZ);
++	for (i = -ifreq_size(*ifrp); i < n; i+= ifreq_size(*ifrp) ) {
++		if(i<0){
++				strncpy(ifr.ifr_name, "eth0", IFNAMSIZ);
++		}else{
++				ifrp = (struct ifreq *)((char *) ifc.ifc_buf+i);
++				strncpy(ifr.ifr_name, ifrp->ifr_name, IFNAMSIZ);
++				}
+ #ifdef SIOCGIFHWADDR
+ 		if (ioctl(sd, SIOCGIFHWADDR, &ifr) < 0)
+ 			continue;

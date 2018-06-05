@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBAWS_CPP_SDK
+	bool "libaws-cpp-sdk"
+	select BR2_USE_ZLIB
+	select BR2_USE_OPENSSL
+	select  BR2_USE_LIBCURL
+	help
+	 The AWS SDK for C++ provides a modern
+	 C++ (version C++ 11 or later) interface for
+	 Amazon Web Services (AWS)
+
+	 https://github.com/aws/aws-sdk-cpp

@@ -1,0 +1,68 @@
+# See package/makedevs/README for details
+#
+# This device table is used to assign proper ownership and permissions
+# on various files. It doesn't create any device file, as it is used
+# in both static device configurations (where /dev/ is static) and in
+# dynamic configurations (where devtmpfs, mdev or udev are used).
+#
+# <name>						<type>	<mode>	<uid>	<gid>	<major>	<minor>	<start>	<inc>	<count>
+/dev								d	755	0	0	-	-	-	-	-
+/tmp								d	1777	0	0	-	-	-	-	-
+/etc								d	755	0	0	-	-	-	-	-
+/root								d	700	0	0	-	-	-	-	-
+/home/default					d	755	1000	1000	-	-	-	-	-
+/var/www							d	755	33	33	-	-	-	-	-
+/etc/shadow						f	600	0	0	-	-	-	-	-
+/etc/passwd						f	644	0	0	-	-	-	-	-
+/etc/network/if-up.d				d	755	0	0	-	-	-	-	-
+/etc/network/if-pre-up.d			d	755	0	0	-	-	-	-	-
+/etc/network/if-post-up.d		d	755	0	0	-	-	-	-	-
+/etc/network/if-down.d			d	755	0	0	-	-	-	-	-
+/etc/network/if-pre-down.d		d	755	0	0	-	-	-	-	-
+/etc/network/if-post-down.d	d	755	0	0	-	-	-	-	-
+/boot							d	755	0	0	-	-	-	-	-
+/mnt/app/						d	755	0	0	-	-	-	-	-
+/usb							d	755	0	0	-	-	-	-	-
+/usr/sysman					d	755	0	0	-	-	-	-	-
+/usr/ttower					d	755	0	0	-	-	-	-	-
+/usr/datalog					d	755	0	0	-	-	-	-	-
+/usr/osupdate				d	755	0	0	-	-	-	-	-
+/var/ttower					d	755	101	101	-	-	-	-	-
+/var/sysman					d	755	0	0	-	-	-	-	-
+/var/datalog					d	755	0	0	-	-	-	-	-
+/mnt/logsync					d	755	0	0	-	-	-	-	-
+/etc/ttower					d	755	0	0	-	-	-	-	-
+/mnt/update					d	755	0	0	-	-	-	-	-
+/sources						d	755	0	0	-	-	-	-	-
+/sources/host-licenses		d	755	0	0	-	-	-	-	-
+/sources/host-sources		d	755	0	0	-	-	-	-	-
+/sources/licenses				d	755	0	0	-	-	-	-	-
+/sources/sources				d	755	0	0	-	-	-	-	-
+/bin/busybox					f	4755	0	0	-	-	-	-	-
+/bin/fbtext					f	755	0	0	-	-	-	-	-
+/usr/osupdate/extpartsize	f	744	0	0	-	-	-	-	-
+/usr/osupdate/doupdate	f	744	0	0	-	-	-	-	-
+/etc/fstab				f	664	0	0	-	-	-	-	-
+/etc/group			f	664	0	0	-	-	-	-	-
+/etc/inittab			f	664	0	0	-	-	-	-	-
+/etc/osid.xml			f	644	0	0	-	-	-	-	-
+/etc/profile			f	664	0	0	-	-	-	-	-
+/etc/ts.conf			f	644	0	0	-	-	-	-	-
+/etc/init.d/S00lancer		f	740	0	0	-	-	-	-	-
+/etc/init.d/S01logging	f	755	0	0	-	-	-	-	-
+/etc/init.d/S75lancer		f	770	0	0	-	-	-	-	-
+/home/LancerLogin		d	755	103	99	-	-	-	-	-
+/home/LancerLogin/.ssh		d	700	103	99	-	-	-	-	-
+/home/LancerLogin/.ssh/authorized_keys		f	600	103	99	-	-	-	-	-
+/etc/ifplugd/ifplugd.action	f 	0700 	0 	0 	- 	- 	- 	- 	-
+/etc/network/if-attach 	f	0700 	0 	0 	- 	- 	- 	- 	-
+/etc/network/if-detach 	f 	0700 	0 	0 	- 	- 	- 	- 	-
+/etc/network/if-post-down.d/rmresolv 	f	0700 	0 	0 	- 	- 	- 	- 	-
+/etc/network/if-up.d/cfgresolv 	f	0700
+/etc/network/if-up.d/rmgateway 	f	0700 	0 	0 	- 	- 	- 	- 	-
+/etc/postinit.d/S40net 	f	0770 	0 	0 	- 	- 	- 	- 	-
+/sbin/dhclient-script 	f	0755 	0 	0 	- 	- 	- 	- 	-
+/sbin/ifauto 	f	0755 	0 	0 	- 	- 	- 	- 	-
+/sbin/ifisup 	f	0755 	0 	0 	- 	- 	- 	- 	-
+/usr/sbin/lanattachd 	f 	0755 	0 	0 	- 	- 	- 	- 	-
+/var/resolv 	d 	0755 	0 	0 	- 	- 	- 	- 	-

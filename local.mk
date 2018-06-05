@@ -1,0 +1,1 @@
+UBOOT_OVERRIDE_SRCDIR=/home/lancer/Desktop/sources/uboot_wandboard_lancer/

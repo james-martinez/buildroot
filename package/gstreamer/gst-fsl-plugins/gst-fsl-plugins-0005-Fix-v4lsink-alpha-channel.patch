@@ -1,0 +1,62 @@
+patch for lancer. configure alpha channel for our needs.
+
+--- a/src/misc/v4l_sink/src/mfw_gst_fb.c
++++ b/src/misc/v4l_sink/src/mfw_gst_fb.c
+@@ -118,18 +118,7 @@
+ 
+     gboolean ret = TRUE;
+ 
+-#if ((!defined (_MX233)) && (!defined (_MX28)) && (!defined (_MX50)))
+-    struct mxcfb_gbl_alpha alpha;
+ 
+-    alpha.alpha = alphaVal;
+-    alpha.enable = 1;
+-    if (fb == 0)
+-        g_print("no fb0 device\n");
+-    if (ioctl(fb, MXCFB_SET_GBL_ALPHA, &alpha) < 0) {
+-        g_print("set global alpha failed.\n");
+-        ret = FALSE;
+-    }
+-#endif
+     return ret;
+ }
+ 
+@@ -152,37 +141,7 @@
+     gboolean ret = TRUE;
+ 
+ 
+-#if ((!defined (_MX233)) && (!defined (_MX28)) && (!defined (_MX50)))
+-    struct mxcfb_color_key colorKey;
+-    struct fb_var_screeninfo fbVar;
+-
+-    if (ioctl(fb, FBIOGET_VSCREENINFO, &fbVar) < 0) {
+-        g_print("get vscreen info failed.\n");
+-        ret = FALSE;
+-    }
+-
+-    if (fbVar.bits_per_pixel == 16) {
+-        *colorSrc = RGB888TORGB565(RGB888(COLORKEY_RED, COLORKEY_GREEN, COLORKEY_BLUE));
+-        GST_DEBUG("%08X:%08X:%8X",RGB888(COLORKEY_RED, COLORKEY_GREEN, COLORKEY_BLUE),
+-            RGB888TORGB565(RGB888(COLORKEY_RED, COLORKEY_GREEN, COLORKEY_BLUE)),
+-            RGB565TOCOLORKEY(RGB888TORGB565(RGB888(COLORKEY_RED, COLORKEY_GREEN, COLORKEY_BLUE))));
+-        colorKey.color_key = RGB565TOCOLORKEY(*colorSrc);
+-    }
+-    else if ((fbVar.bits_per_pixel == 32) || (fbVar.bits_per_pixel == 24)) {
+-        *colorSrc = RGB888(COLORKEY_RED, COLORKEY_GREEN, COLORKEY_BLUE);
+-        colorKey.color_key = *colorSrc;
+-
+-    }
+-    GST_DEBUG("fbVar.bits_per_pixel:%d",fbVar.bits_per_pixel);
+-
+-    GST_INFO("color source:0x%08x,set color key:0x%08x.",*colorSrc,colorKey.color_key);
+-
+-    colorKey.enable = 1;
+-    if (ioctl(fb, MXCFB_SET_CLR_KEY, &colorKey) < 0) {
+-        g_print("set color key failed.\n");
+-        ret = FALSE;
+-    }
+-#endif
++
+     return ret;
+ }
+ 
