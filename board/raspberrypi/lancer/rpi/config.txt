@@ -1,0 +1,20 @@
+kernel=zImage
+
+gpu_mem_1024=100
+
+dtparam=watchdog=on
+dtparam=i2c_arm=on
+dtparam=spi=on
+dtparam=pwr_led_trigger=heartbeat
+dtoverlay=pi3-miniuart-bt
+dtoverlay=i2c-rtc,pcf8523
+dtoverlay=sc16is752-spi1
+
+disable_splash=1
+
+#display override 800 x 480
+hdmi_force_hotplug=1
+hdmi_group=2
+hdmi_mode=1
+hdmi_mode=87
+hdmi_timings=800 0 40 48 44 480 0 13 3 30 0 0 0 60 0 32000000 6
