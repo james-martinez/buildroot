@@ -18,9 +18,9 @@ OPENSSH_CONF_OPTS = \
 	--disable-wtmpx \
 	--disable-strip
 
-define OPENSSH_USERS
-	sshd -1 sshd -1 * - - - SSH drop priv user
-endef
+#define OPENSSH_USERS
+#	sshd -1 sshd -1 * - - - SSH drop priv user
+#endef
 
 ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 OPENSSH_CONF_OPTS += --without-pie
