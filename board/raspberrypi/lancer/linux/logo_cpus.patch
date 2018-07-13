@@ -1,0 +1,11 @@
+--- /drivers/video/fbdev/core/fbmem.c	2018-03-22 11:42:28.000000000 -0500
++++ /drivers/video/fbdev/core/fbmem.c	2018-07-13 08:36:52.775146636 -0500
+@@ -667,7 +667,7 @@
+ 	int y;
+ 
+ 	y = fb_show_logo_line(info, rotate, fb_logo.logo, 0,
+-			      num_online_cpus());
++			      1);
+ 	y = fb_show_extra_logos(info, y, rotate);
+ 
+ 	return y;

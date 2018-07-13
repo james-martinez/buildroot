@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Buildroot 2018.05-g97f42ee Configuration
+# Buildroot 2018.05-g69dc606-dirty Configuration
 #
 BR2_HAVE_DOT_CONFIG=y
 BR2_HOST_GCC_AT_LEAST_4_5=y
@@ -441,7 +441,7 @@ BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
 # BR2_LINUX_KERNEL_CUSTOM_SVN is not set
 BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="$(call github,raspberrypi,linux,c117a8bccf37bfba323065b566cf999ed4629a4a)/linux-c117a8bccf37bfba323065b566cf999ed4629a4a.tar.gz"
 BR2_LINUX_KERNEL_VERSION="custom"
-BR2_LINUX_KERNEL_PATCH=""
+BR2_LINUX_KERNEL_PATCH="board/raspberrypi/lancer/linux/logo_lancer.patch board/raspberrypi/lancer/linux/logo_cpus.patch"
 # BR2_LINUX_KERNEL_USE_DEFCONFIG is not set
 # BR2_LINUX_KERNEL_USE_ARCH_DEFAULT_CONFIG is not set
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
