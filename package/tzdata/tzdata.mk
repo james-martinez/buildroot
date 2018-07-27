@@ -10,7 +10,10 @@ TZDATA_SITE = http://www.iana.org/time-zones/repository/releases
 TZDATA_STRIP_COMPONENTS = 0
 TZDATA_DEPENDENCIES = host-tzdata
 HOST_TZDATA_DEPENDENCIES = host-zic
-TZDATA_LICENSE = Public domain
+HOST_TZDATA_LICENSE = Public domain BSD
+HOST_TZDATA_LICENSE_FILES = LICENSE
+TZDATA_LICENSE = Public domain BSD
+TZDATA_LICENSE_FILES = LICENSE
 
 # Take care when re-ordering this list since this might break zone
 # dependencies
@@ -27,7 +30,7 @@ endif
 TZDATA_LOCALTIME = $(call qstrip,$(BR2_TARGET_LOCALTIME))
 
 # No need to extract for target, we're using the host-installed files
-TZDATA_EXTRACT_CMDS =
+#TZDATA_EXTRACT_CMDS = 
 
 define TZDATA_INSTALL_TARGET_CMDS
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/usr/share/zoneinfo
