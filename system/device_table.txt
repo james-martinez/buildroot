@@ -35,10 +35,6 @@
 /etc/ttower					d	755	0	0	-	-	-	-	-
 /mnt/update					d	755	0	0	-	-	-	-	-
 /sources						d	755	0	0	-	-	-	-	-
-/sources/host-licenses		d	755	0	0	-	-	-	-	-
-/sources/host-sources		d	755	0	0	-	-	-	-	-
-/sources/licenses				d	755	0	0	-	-	-	-	-
-/sources/sources				d	755	0	0	-	-	-	-	-
 /bin/busybox					f	4755	0	0	-	-	-	-	-
 /bin/fbtext					f	755	0	0	-	-	-	-	-
 /usr/osupdate/extpartsize	f	744	0	0	-	-	-	-	-
