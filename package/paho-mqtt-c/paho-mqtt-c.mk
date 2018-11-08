@@ -18,11 +18,11 @@ PAHO_MQTT_C_CONF_OPTS += -DPAHO_WITH_SSL=FALSE
 endif
 
 define PAHO_MQTT_C_BUILD_CMDS
-     $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) $(MQTTLIB_C_TARGET)
+     $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)
  endef
 
 #define PAHO_MQTT_C_INSTALL_STAGING_CMDS
- #     $(INSTALL) -D -m 0755 $(@D)/libfoo.a $(STAGING_DIR)/usr/lib/libfoo.a
+#     $(INSTALL) -D -m 0755 $(@D)/libfoo.a $(STAGING_DIR)/usr/lib/libfoo.a
 #endef
 
 define PAHO_MQTT_C_INSTALL_TARGET_CMDS
