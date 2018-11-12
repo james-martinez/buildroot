@@ -21,9 +21,9 @@ define PAHO_MQTT_C_BUILD_CMDS
      $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)
  endef
 
-#define PAHO_MQTT_C_INSTALL_STAGING_CMDS
-#     $(INSTALL) -D -m 0755 $(@D)/libfoo.a $(STAGING_DIR)/usr/lib/libfoo.a
-#endef
+define PAHO_MQTT_C_INSTALL_STAGING_CMDS
+     $(INSTALL) -D -m 0755 $(@D)/build/output/libpaho-*.so* $(STAGING_DIR)/usr/lib
+endef
 
 define PAHO_MQTT_C_INSTALL_TARGET_CMDS
       $(INSTALL) -D -m 0755 $(@D)/build/output/libpaho-*.so* $(TARGET_DIR)/usr/lib

@@ -1,0 +1,5 @@
+config BR2_PACKAGE_OPENCT
+	bool "openct"
+	help
+	  OpenCT implements drivers for several smart card readers
+          https://github.com/OpenSC/openct

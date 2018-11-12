@@ -837,6 +837,8 @@ endmenu
 
 menu "Security"
 source "package/libsepol/Config.in"
+source "package/opensc/Config.in"
+source "package/openct/Config.in"
 endmenu
 
 menu "Text and terminal handling"
