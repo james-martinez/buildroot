@@ -1,0 +1,11 @@
+--- /openct.orig/Makefile.am	2010-02-16 02:58:46.000000000 -0600
++++ openct/Makefile.am	2018-11-12 15:58:58.808008304 -0600
+@@ -14,7 +14,7 @@
+ 	$(srcdir)/packaged
+ EXTRA_DIST = svnignore
+ 
+-SUBDIRS = etc macos src doc
++SUBDIRS = etc macos src
+ 
+ dist_noinst_SCRIPTS = bootstrap
+ dist_noinst_DATA = LGPL-2.1 TODO \
