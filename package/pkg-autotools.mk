@@ -184,8 +184,8 @@ define LIBTOOL_PATCH_HOOK
 				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v1.5.patch; \
 			elif test $$$${ltmain_version} = "2.2"; then\
 				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v2.2.patch; \
-			elif test $$$${ltmain_version} = "2.4"; then\
-				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v2.4.patch; \
+			elif test $$$${ltmain_version} = "2.4.4"; then\
+				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v2.4.4.patch; \
 			fi \
 		done \
 	fi
@@ -210,8 +210,8 @@ define AUTORECONF_HOOK
 				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v1.5.patch; \
 			elif test $$$${ltmain_version} = "2.2"; then\
 				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v2.2.patch; \
-			elif test $$$${ltmain_version} = "2.4"; then\
-				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v2.4.patch; \
+			elif test $$$${ltmain_version} = "2.4.4"; then\
+				support/scripts/apply-patches.sh $$$${i%/*} support/libtool buildroot-libtool-v2.4.4.patch; \
 			fi \
 		done \
 	fi
