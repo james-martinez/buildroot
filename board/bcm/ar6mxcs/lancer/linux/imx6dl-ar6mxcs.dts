@@ -23,7 +23,7 @@
 		fsl,data-width = <24>;
 		crtc = "ipu1-di0";
 		display-timings {
-			native-mode = <&g070_800x480>;
+			native-mode = <&vesa_1024x768>;
 		};
 	};
 
