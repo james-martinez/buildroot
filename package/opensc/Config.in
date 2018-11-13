@@ -1,0 +1,7 @@
+config BR2_PACKAGE_OPENSC
+	bool "opensc"
+select BR2_PACKAGE_PCSC_LITE
+select BR2_PACKAGE_OPENSSL
+	help
+	 Open source smart card tools and middleware. PKCS#11/MiniDriver/Tokend
+         https://github.com/OpenSC/OpenSC/

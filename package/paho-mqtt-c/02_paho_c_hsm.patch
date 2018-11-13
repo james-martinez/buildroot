@@ -1,0 +1,579 @@
+Index: src/SSLSocket.c
+===================================================================
+--- paho-mqtt-c.orig/src/SSLSocket.c	(revision 2)
++++ paho-mqtt-c/src/SSLSocket.c	(revision 4)
+@@ -18,6 +18,7 @@
+  *    Ian Craggs - fix for bug #480363, issue 13
+  *    Ian Craggs - SNI support
+  *    Ian Craggs - fix for issues #155, #160
++ *    Lancer Corperation - Hardware Security Module (HSM) support
+  *******************************************************************************/
+ 
+ /**
+@@ -43,6 +44,7 @@
+ #include <openssl/err.h>
+ #include <openssl/crypto.h>
+ #include <openssl/x509v3.h>
++#include <openssl/engine.h>   //HSM support
+ 
+ extern Sockets s;
+ 
+@@ -67,7 +69,7 @@
+ extern unsigned long SSLThread_id(void);
+ #endif
+ extern void SSLLocks_callback(int mode, int n, const char *file, int line);
+-int SSLSocket_createContext(networkHandles* net, MQTTClient_SSLOptions* opts);
++int SSLSocket_createContext(networkHandles* net, MQTTClient_SSLOptions_HSM* opts_HSM);
+ void SSLSocket_destroyContext(networkHandles* net);
+ void SSLSocket_addPendingRead(int sock);
+ 
+@@ -514,9 +516,10 @@
+ 	FUNC_EXIT;
+ }
+ 
+-int SSLSocket_createContext(networkHandles* net, MQTTClient_SSLOptions* opts)
++int SSLSocket_createContext(networkHandles* net, MQTTClient_SSLOptions_HSM* opts_HSM)
+ {
+ 	int rc = 1;
++  MQTTClient_SSLOptions* opts=&opts_HSM->base;  //HSM support
+ 
+ 	FUNC_ENTRY;
+ 	if (net->ctx == NULL)
+@@ -558,8 +561,15 @@
+ 				SSLSocket_error("SSL_CTX_new", NULL, net->socket, rc, NULL, NULL);
+ 			goto exit;
+ 		}
+-	}
++	}
+ 
++  /*==== BEGIN HSM support*/
++  if (opts_HSM->client_cert_engine)
++  {
++    SSL_CTX_set_client_cert_engine(net->ctx,opts_HSM->client_cert_engine);
++  }
++  /*==== END HSM support*/
++
+ 	if (opts->keyStore)
+ 	{
+ 		if ((rc = SSL_CTX_use_certificate_chain_file(net->ctx, opts->keyStore)) != 1)
+@@ -579,7 +589,12 @@
+ 			SSL_CTX_set_default_passwd_cb(net->ctx, pem_passwd_cb);
+ 			SSL_CTX_set_default_passwd_cb_userdata(net->ctx, (void*)opts->privateKeyPassword);
+ 		}
+-
++
++    /*==== BEGIN HSM support*/
++    if (opts_HSM->privateKeyLoaded){
++		  rc = SSL_CTX_use_PrivateKey(net->ctx, opts_HSM->privateKeyLoaded);
++    }else
++    /*==== END HSM support*/
+ 		/* support for ASN.1 == DER format? DER can contain only one certificate? */
+ 		rc = SSL_CTX_use_PrivateKey_file(net->ctx, opts->privateKey, SSL_FILETYPE_PEM);
+ 		if (opts->privateKey == opts->keyStore)
+@@ -639,14 +654,15 @@
+ }
+ 
+ 
+-int SSLSocket_setSocketForSSL(networkHandles* net, MQTTClient_SSLOptions* opts,
++int SSLSocket_setSocketForSSL(networkHandles* net, MQTTClient_SSLOptions_HSM* opts_HSM,
+ 	const char* hostname, size_t hostname_len)
+ {
+-	int rc = 1;
++	int rc = 1;
++  MQTTClient_SSLOptions* opts=&opts_HSM->base;  //HSM support
+ 
+ 	FUNC_ENTRY;
+ 
+-	if (net->ctx != NULL || (rc = SSLSocket_createContext(net, opts)) == 1)
++	if (net->ctx != NULL || (rc = SSLSocket_createContext(net, opts_HSM)) == 1)
+ 	{
+ 		char *hostname_plus_null;
+ 		int i;
+Index: src/SSLSocket.h
+===================================================================
+--- paho-mqtt-c.orig/src/SSLSocket.h	(revision 2)
++++ paho-mqtt-c/src/SSLSocket.h	(revision 4)
+@@ -14,6 +14,7 @@
+  *    Ian Craggs, Allan Stockdill-Mander - initial implementation 
+  *    Ian Craggs - SNI support
+  *    Ian Craggs - post connect checks and CApath
++ *    Lancer Corperation - Hardware Security Module (HSM) support
+  *******************************************************************************/
+ #if !defined(SSLSOCKET_H)
+ #define SSLSOCKET_H
+@@ -37,7 +38,7 @@
+ 
+ int SSLSocket_initialize(void);
+ void SSLSocket_terminate(void);
+-int SSLSocket_setSocketForSSL(networkHandles* net, MQTTClient_SSLOptions* opts, const char* hostname, size_t hostname_len);
++int SSLSocket_setSocketForSSL(networkHandles* net, MQTTClient_SSLOptions_HSM* opts_HSM, const char* hostname, size_t hostname_len);
+ 
+ int SSLSocket_getch(SSL* ssl, int socket, char* c);
+ char *SSLSocket_getdata(SSL* ssl, int socket, size_t bytes, size_t* actual_len);
+Index: src/MQTTProtocolOut.c
+===================================================================
+--- paho-mqtt-c.orig/src/MQTTProtocolOut.c	(revision 2)
++++ paho-mqtt-c/src/MQTTProtocolOut.c	(revision 4)
+@@ -21,6 +21,7 @@
+  *    Ian Craggs - fix for issue #164
+  *    Ian Craggs - fix for issue #179
+  *    Ian Craggs - MQTT 5.0 support
++ *    Lancer Corperation - Hardware Security Module (HSM) support
+  *******************************************************************************/
+ 
+ /**
+@@ -123,7 +124,7 @@
+ #if defined(OPENSSL)
+ 		if (ssl)
+ 		{
+-			if (SSLSocket_setSocketForSSL(&aClient->net, aClient->sslopts, ip_address, addr_len) == 1)
++			if (SSLSocket_setSocketForSSL(&aClient->net, aClient->sslopts_HSM, ip_address, addr_len) == 1)
+ 			{
+ 				rc = aClient->sslopts->struct_version >= 3 ?
+ 					SSLSocket_connect(aClient->net.ssl, aClient->net.socket, ip_address,
+Index: src/Clients.h
+===================================================================
+--- paho-mqtt-c.orig/src/Clients.h	(revision 2)
++++ paho-mqtt-c/src/Clients.h	(revision 4)
+@@ -17,6 +17,7 @@
+  *    Ian Craggs - change will payload to binary
+  *    Ian Craggs - password to binary
+  *    Ian Craggs - MQTT 5 support
++ *    Lancer Corperation - Hardware Security Module (HSM) support
+  *******************************************************************************/
+ 
+ #if !defined(CLIENTS_H)
+@@ -133,7 +134,8 @@
+ 	int MQTTVersion;
+ 	int sessionExpiry; /**< MQTT 5 session expiry */
+ #if defined(OPENSSL)
+-	MQTTClient_SSLOptions *sslopts;
++	MQTTClient_SSLOptions *sslopts;
++	MQTTClient_SSLOptions_HSM *sslopts_HSM; //HSM support; sslopts always points into this if not NULL
+ 	SSL_SESSION* session;    /***< SSL session pointer for fast handhake */
+ #endif
+ } Clients;
+Index: src/MQTTProtocolClient.c
+===================================================================
+--- paho-mqtt-c.orig/src/MQTTProtocolClient.c	(revision 2)
++++ paho-mqtt-c/src/MQTTProtocolClient.c	(revision 4)
+@@ -19,6 +19,7 @@
+  *    Ian Craggs - turn off DUP flag for PUBREL - MQTT 3.1.1
+  *    Ian Craggs - ensure that acks are not sent if write is outstanding on socket
+  *    Ian Craggs - MQTT 5.0 support
++ *    Lancer Corperation - Hardware Security Module (HSM) support
+  *******************************************************************************/
+ 
+ /**
+@@ -789,8 +790,11 @@
+ 			if (client->sslopts->CApath)
+ 				free((void*)client->sslopts->CApath);
+ 		}
+-		free(client->sslopts);
+-                client->sslopts = NULL;
++    /*==== BEGIN HSM support changes*/
++		free(client->sslopts_HSM);
++		client->sslopts = NULL;
++		client->sslopts_HSM = NULL;
++    /*==== END HSM support changes*/
+ 	}
+ #endif
+ 	/* don't free the client structure itself... this is done elsewhere */
+Index: src/MQTTAsync.c
+===================================================================
+--- paho-mqtt-c.orig/src/MQTTAsync.c	(revision 2)
++++ paho-mqtt-c/src/MQTTAsync.c	(revision 4)
+@@ -36,6 +36,7 @@
+  *    Ian Craggs - check for NULL SSL options #334
+  *    Ian Craggs - allocate username/password buffers #431
+  *    Ian Craggs - MQTT 5.0 support
++ *    Lancer Corperation - Hardware Security Module (HSM) support
+  *******************************************************************************/
+ 
+ /**
+@@ -2733,7 +2734,10 @@
+ {
+ 	MQTTAsyncs* m = handle;
+ 	int rc = MQTTASYNC_SUCCESS;
+-	MQTTAsync_queuedCommand* conn;
++	MQTTAsync_queuedCommand* conn;
++#ifdef OPENSSL
++  int sslopts_are_HSM=0;  //HSM support
++#endif
+ 
+ 	FUNC_ENTRY;
+ 	if (options == NULL)
+@@ -2770,7 +2774,16 @@
+ 		}
+ 	}
+ 	if (options->struct_version != 0 && options->ssl) /* check validity of SSL options structure */
+-	{
++	{
++    /*==== BEGIN HSM support*/
++#ifdef OPENSSL
++		if (strncmp(options->ssl->struct_id, "HSMA", 4) == 0 && options->ssl->struct_version == 0 && options->ssl_HSM->base.struct_version >= 0 && options->ssl_HSM->base.struct_version <= 3)
++    {
++      sslopts_are_HSM=1;
++    }
++    else
++#endif
++    /*==== END HSM support*/
+ 		if (strncmp(options->ssl->struct_id, "MQTS", 4) != 0 || options->ssl->struct_version < 0 || options->ssl->struct_version > 3)
+ 		{
+ 			rc = MQTTASYNC_BAD_STRUCTURE;
+@@ -2905,39 +2918,60 @@
+ 			if (m->c->sslopts->CApath)
+ 				free((void*)m->c->sslopts->CApath);
+ 		}
+-		free((void*)m->c->sslopts);
+-		m->c->sslopts = NULL;
++    /*==== BEGIN HSM support changes*/
++		free((void*)m->c->sslopts_HSM);
++		m->c->sslopts = NULL;
++		m->c->sslopts_HSM = NULL;
++    /*==== END HSM support changes*/
+ 	}
+ 
+ 	if (options->struct_version != 0 && options->ssl)
+-	{
+-		m->c->sslopts = malloc(sizeof(MQTTClient_SSLOptions));
+-		memset(m->c->sslopts, '\0', sizeof(MQTTClient_SSLOptions));
+-		m->c->sslopts->struct_version = options->ssl->struct_version;
+-		if (options->ssl->trustStore)
+-			m->c->sslopts->trustStore = MQTTStrdup(options->ssl->trustStore);
+-		if (options->ssl->keyStore)
+-			m->c->sslopts->keyStore = MQTTStrdup(options->ssl->keyStore);
+-		if (options->ssl->privateKey)
+-			m->c->sslopts->privateKey = MQTTStrdup(options->ssl->privateKey);
+-		if (options->ssl->privateKeyPassword)
+-			m->c->sslopts->privateKeyPassword = MQTTStrdup(options->ssl->privateKeyPassword);
+-		if (options->ssl->enabledCipherSuites)
+-			m->c->sslopts->enabledCipherSuites = MQTTStrdup(options->ssl->enabledCipherSuites);
+-		m->c->sslopts->enableServerCertAuth = options->ssl->enableServerCertAuth;
++	{
++    /*==== BEGIN HSM support changes*/
++    MQTTAsync_SSLOptions* ssl;
++
++		m->c->sslopts_HSM = malloc(sizeof(MQTTClient_SSLOptions_HSM));
++		memset(m->c->sslopts_HSM, '\0', sizeof(MQTTClient_SSLOptions_HSM));
++    m->c->sslopts=&m->c->sslopts_HSM->base;
++    
++    if(sslopts_are_HSM){
++      ssl=&options->ssl_HSM->base;
++      if(options->ssl_HSM->client_cert_engine){
++        m->c->sslopts_HSM->client_cert_engine=options->ssl_HSM->client_cert_engine;
++      }
++      if(options->ssl_HSM->privateKeyLoaded){
++        m->c->sslopts_HSM->privateKeyLoaded=options->ssl_HSM->privateKeyLoaded;
++      }
++    }else{
++      ssl=options->ssl;
++    }
++
++		m->c->sslopts->struct_version = ssl->struct_version;
++		if (ssl->trustStore)
++			m->c->sslopts->trustStore = MQTTStrdup(ssl->trustStore);
++		if (ssl->keyStore)
++			m->c->sslopts->keyStore = MQTTStrdup(ssl->keyStore);
++		if (ssl->privateKey)
++			m->c->sslopts->privateKey = MQTTStrdup(ssl->privateKey);
++		if (ssl->privateKeyPassword)
++			m->c->sslopts->privateKeyPassword = MQTTStrdup(ssl->privateKeyPassword);
++		if (ssl->enabledCipherSuites)
++			m->c->sslopts->enabledCipherSuites = MQTTStrdup(ssl->enabledCipherSuites);
++		m->c->sslopts->enableServerCertAuth = ssl->enableServerCertAuth;
+ 		if (m->c->sslopts->struct_version >= 1)
+-			m->c->sslopts->sslVersion = options->ssl->sslVersion;
++			m->c->sslopts->sslVersion = ssl->sslVersion;
+ 		if (m->c->sslopts->struct_version >= 2)
+ 		{
+-			m->c->sslopts->verify = options->ssl->verify;
+-			if (options->ssl->CApath)
+-				m->c->sslopts->CApath = MQTTStrdup(options->ssl->CApath);
++			m->c->sslopts->verify = ssl->verify;
++			if (ssl->CApath)
++				m->c->sslopts->CApath = MQTTStrdup(ssl->CApath);
+ 		}
+ 		if (m->c->sslopts->struct_version >= 3)
+ 		{
+-			m->c->sslopts->ssl_error_cb = options->ssl->ssl_error_cb;
+-			m->c->sslopts->ssl_error_context = options->ssl->ssl_error_context;
++			m->c->sslopts->ssl_error_cb = ssl->ssl_error_cb;
++			m->c->sslopts->ssl_error_context = ssl->ssl_error_context;
+ 		}
++    /*==== END HSM support changes*/
+ 	}
+ #else
+ 	if (options->struct_version != 0 && options->ssl)
+@@ -3532,7 +3566,7 @@
+ 			int setSocketForSSLrc = 0;
+ 
+ 			hostname_len = MQTTProtocol_addressPort(m->serverURI, &port, NULL);
+-			setSocketForSSLrc = SSLSocket_setSocketForSSL(&m->c->net, m->c->sslopts,
++			setSocketForSSLrc = SSLSocket_setSocketForSSL(&m->c->net, m->c->sslopts_HSM,
+ 				m->serverURI, hostname_len);
+ 
+ 			if (setSocketForSSLrc != MQTTASYNC_SUCCESS)
+Index: src/MQTTClient.c
+===================================================================
+--- paho-mqtt-c.orig/src/MQTTClient.c	(revision 2)
++++ paho-mqtt-c/src/MQTTClient.c	(revision 4)
+@@ -35,6 +35,7 @@
+  *    Ian Craggs - check for NULL SSL options #334
+  *    Ian Craggs - allocate username/password buffers #431
+  *    Ian Craggs - MQTT 5.0 support
++ *    Lancer Corperation - Hardware Security Module (HSM) support
+  *******************************************************************************/
+ 
+ /**
+@@ -1133,7 +1134,7 @@
+ 			int setSocketForSSLrc = 0;
+ 
+ 			hostname_len = MQTTProtocol_addressPort(m->serverURI, &port, &topic);
+-			setSocketForSSLrc = SSLSocket_setSocketForSSL(&m->c->net, m->c->sslopts,
++			setSocketForSSLrc = SSLSocket_setSocketForSSL(&m->c->net, m->c->sslopts_HSM,
+ 				m->serverURI, hostname_len);
+ 
+ 			if (setSocketForSSLrc != MQTTCLIENT_SUCCESS)
+@@ -1416,39 +1417,63 @@
+ 			if (m->c->sslopts->CApath)
+ 				free((void*)m->c->sslopts->CApath);
+ 		}
+-		free(m->c->sslopts);
+-		m->c->sslopts = NULL;
++    /*==== BEGIN HSM support changes*/
++		free((void*)m->c->sslopts_HSM);
++		m->c->sslopts = NULL;
++		m->c->sslopts_HSM = NULL;
++    /*==== END HSM support changes*/
+ 	}
+ 
+ 	if (options->struct_version != 0 && options->ssl)
+ 	{
++    /*==== BEGIN HSM support changes*/
++    MQTTClient_SSLOptions* ssl;
++
++		m->c->sslopts_HSM = malloc(sizeof(MQTTClient_SSLOptions_HSM));
++		memset(m->c->sslopts_HSM, '\0', sizeof(MQTTClient_SSLOptions_HSM));
++    m->c->sslopts=&m->c->sslopts_HSM->base;
++    
++    if (strncmp(options->ssl->struct_id, "HSMC", 4) == 0)
++    {
++      ssl=&options->ssl_HSM->base;
++      if(options->ssl_HSM->client_cert_engine){
++        m->c->sslopts_HSM->client_cert_engine=options->ssl_HSM->client_cert_engine;
++      }
++      if(options->ssl_HSM->privateKeyLoaded){
++        m->c->sslopts_HSM->privateKeyLoaded=options->ssl_HSM->privateKeyLoaded;
++      }
++    }else{
++      ssl=options->ssl;
++    }
++
+ 		m->c->sslopts = malloc(sizeof(MQTTClient_SSLOptions));
+ 		memset(m->c->sslopts, '\0', sizeof(MQTTClient_SSLOptions));
+-		m->c->sslopts->struct_version = options->ssl->struct_version;
+-		if (options->ssl->trustStore)
+-			m->c->sslopts->trustStore = MQTTStrdup(options->ssl->trustStore);
+-		if (options->ssl->keyStore)
+-			m->c->sslopts->keyStore = MQTTStrdup(options->ssl->keyStore);
+-		if (options->ssl->privateKey)
+-			m->c->sslopts->privateKey = MQTTStrdup(options->ssl->privateKey);
+-		if (options->ssl->privateKeyPassword)
+-			m->c->sslopts->privateKeyPassword = MQTTStrdup(options->ssl->privateKeyPassword);
+-		if (options->ssl->enabledCipherSuites)
+-			m->c->sslopts->enabledCipherSuites = MQTTStrdup(options->ssl->enabledCipherSuites);
+-		m->c->sslopts->enableServerCertAuth = options->ssl->enableServerCertAuth;
++		m->c->sslopts->struct_version = ssl->struct_version;
++		if (ssl->trustStore)
++			m->c->sslopts->trustStore = MQTTStrdup(ssl->trustStore);
++		if (ssl->keyStore)
++			m->c->sslopts->keyStore = MQTTStrdup(ssl->keyStore);
++		if (ssl->privateKey)
++			m->c->sslopts->privateKey = MQTTStrdup(ssl->privateKey);
++		if (ssl->privateKeyPassword)
++			m->c->sslopts->privateKeyPassword = MQTTStrdup(ssl->privateKeyPassword);
++		if (ssl->enabledCipherSuites)
++			m->c->sslopts->enabledCipherSuites = MQTTStrdup(ssl->enabledCipherSuites);
++		m->c->sslopts->enableServerCertAuth = ssl->enableServerCertAuth;
+ 		if (m->c->sslopts->struct_version >= 1)
+-			m->c->sslopts->sslVersion = options->ssl->sslVersion;
++			m->c->sslopts->sslVersion = ssl->sslVersion;
+ 		if (m->c->sslopts->struct_version >= 2)
+ 		{
+-			m->c->sslopts->verify = options->ssl->verify;
+-			if (options->ssl->CApath)
+-				m->c->sslopts->CApath = MQTTStrdup(options->ssl->CApath);
++			m->c->sslopts->verify = ssl->verify;
++			if (ssl->CApath)
++				m->c->sslopts->CApath = MQTTStrdup(ssl->CApath);
+ 		}
+ 		if (m->c->sslopts->struct_version >= 3)
+ 		{
+-			m->c->sslopts->ssl_error_cb = options->ssl->ssl_error_cb;
+-			m->c->sslopts->ssl_error_context = options->ssl->ssl_error_context;
++			m->c->sslopts->ssl_error_cb = ssl->ssl_error_cb;
++			m->c->sslopts->ssl_error_context = ssl->ssl_error_context;
+ 		}
++    /*==== END HSM support changes*/
+ 	}
+ #endif
+ 
+@@ -1569,6 +1594,13 @@
+ #if defined(OPENSSL)
+ 	if (options->struct_version != 0 && options->ssl) /* check validity of SSL options structure */
+ 	{
++    /*==== BEGIN HSM support*/
++		if (strncmp(options->ssl->struct_id, "HSMC", 4) == 0 && options->ssl->struct_version == 0 && options->ssl_HSM->base.struct_version >= 0 && options->ssl_HSM->base.struct_version <= 3)
++    {
++      //skip check for non-HSM structure
++    }
++    else
++    /*==== END HSM support*/
+ 		if (strncmp(options->ssl->struct_id, "MQTS", 4) != 0 || options->ssl->struct_version < 0 || options->ssl->struct_version > 3)
+ 		{
+ 			rc.reasonCode = MQTTCLIENT_BAD_STRUCTURE;
+Index: src/MQTTAsync.h
+===================================================================
+--- paho-mqtt-c.orig/src/MQTTAsync.h	(revision 2)
++++ paho-mqtt-c/src/MQTTAsync.h	(revision 4)
+@@ -20,7 +20,8 @@
+  *    Ian Craggs - binary will message
+  *    Ian Craggs - binary password
+  *    Ian Craggs - remove const on eyecatchers #168
+- *    Ian Craggs - MQTT 5.0
++ *    Ian Craggs - MQTT 5.0
++ *    Lancer Corperation - Hardware Security Module (HSM) support
+  *******************************************************************************/
+ 
+ /********************************************************************/
+@@ -111,6 +112,9 @@
+ #if !defined(NO_PERSISTENCE)
+ #include "MQTTClientPersistence.h"
+ #endif
++#ifdef OPENSSL
++#include <openssl/ossl_typ.h>  //HSM support
++#endif
+ 
+ /**
+  * Return code: No error. Indicates successful completion of an MQTT client
+@@ -970,6 +974,30 @@
+     void* ssl_error_context;
+ } MQTTAsync_SSLOptions;
+ 
++//==== BEGIN HSM support
++typedef struct
++{
++/*Our extension definitions require OpenSSL definitions; if not supported, just alias the normal SSLOptions so there is a valid type for the union */
++#ifdef OPENSSL
++	/** The eyecatcher for this structure.  Must be HSMA */
++	char struct_id[4];
++	/** The version number of this structure.  Must be 0 */
++	int struct_version;
++
++  /* If not NULL, set this as the context client cert engine*/
++  ENGINE* client_cert_engine;
++
++  /* If not NULL, use this preloaded private key directly*/
++  EVP_PKEY* privateKeyLoaded;
++
++#endif
++  MQTTAsync_SSLOptions base;
++
++} MQTTAsync_SSLOptions_HSM;
++
++#define MQTTAsync_SSLOptions_HSM_initializer { {'H', 'S', 'M', 'A'}, 0, NULL, NULL, MQTTAsync_SSLOptions_initializer}
++//==== END HSM support
++
+ #define MQTTAsync_SSLOptions_initializer { {'M', 'Q', 'T', 'S'}, 3, NULL, NULL, NULL, NULL, NULL, 1, MQTT_SSL_VERSION_DEFAULT, 0, NULL, NULL, NULL }
+ 
+ /**
+@@ -1060,8 +1088,12 @@
+ 	/**
+       * This is a pointer to an MQTTAsync_SSLOptions structure. If your
+       * application does not make use of SSL, set this pointer to NULL.
+-      */
+-	MQTTAsync_SSLOptions* ssl;
++      */
++  union{
++	  MQTTAsync_SSLOptions* ssl;
++	  MQTTAsync_SSLOptions_HSM* ssl_HSM;  //HSM support
++  };
++
+ 	/**
+       * A pointer to a callback function to be called if the connect successfully
+       * completes.  Can be set to NULL, in which case no indication of successful
+Index: src/MQTTClient.h
+===================================================================
+--- paho-mqtt-c.orig/src/MQTTClient.h	(revision 2)
++++ paho-mqtt-c/src/MQTTClient.h	(revision 4)
+@@ -16,6 +16,7 @@
+  *    Ian Craggs - multiple server connection support
+  *    Ian Craggs - MQTT 3.1.1 support
+  *    Ian Craggs - remove const from eyecatchers #168
++ *    Lancer Corperation - Hardware Security Module (HSM) support
+  *******************************************************************************/
+ 
+ /**
+@@ -129,6 +130,9 @@
+ #if !defined(NO_PERSISTENCE)
+ #include "MQTTClientPersistence.h"
+ #endif
++#ifdef OPENSSL
++#include <openssl/ossl_typ.h>  //HSM support
++#endif
+ 
+ /**
+  * Return code: No error. Indicates successful completion of an MQTT client
+@@ -714,10 +718,34 @@
+      */
+     void* ssl_error_context;
+ 
+-} MQTTClient_SSLOptions;
++} MQTTClient_SSLOptions;
++
++/*==== BEGIN HSM support*/
++typedef struct
++{
++/*Our extension definitions require OpenSSL definitions; if not supported, just alias the normal SSLOptions so there is a valid type for the union */
++#ifdef OPENSSL
++	/** The eyecatcher for this structure.  Must be HSMC */
++	char struct_id[4];
++	/** The version number of this structure.  Must be 0 */
++	int struct_version;
++
++  /* If not NULL, set this as the context client cert engine*/
++  ENGINE* client_cert_engine;
++
++  /* If not NULL, use this preloaded private key directly*/
++  EVP_PKEY* privateKeyLoaded;
++
++#endif
++  MQTTClient_SSLOptions base;
++
++} MQTTClient_SSLOptions_HSM;
++
++#define MQTTClient_SSLOptions_HSM_initializer { {'H', 'S', 'M', 'C'}, 0, NULL, NULL, MQTTClient_SSLOptions_initializer}
++/*==== END HSM support*/
+ 
+-#define MQTTClient_SSLOptions_initializer { {'M', 'Q', 'T', 'S'}, 3, NULL, NULL, NULL, NULL, NULL, 1, MQTT_SSL_VERSION_DEFAULT, 0, NULL, NULL, NULL }
+-
++#define MQTTClient_SSLOptions_initializer { {'M', 'Q', 'T', 'S'}, 3, NULL, NULL, NULL, NULL, NULL, 1, MQTT_SSL_VERSION_DEFAULT, 0, NULL, NULL, NULL }
++
+ /**
+  * MQTTClient_connectOptions defines several settings that control the way the
+  * client connects to an MQTT server.
+@@ -820,8 +848,11 @@
+ 	/**
+    * This is a pointer to an MQTTClient_SSLOptions structure. If your
+    * application does not make use of SSL, set this pointer to NULL.
+-   */
+-	MQTTClient_SSLOptions* ssl;
++   */
++  union{
++	  MQTTClient_SSLOptions* ssl;
++	  MQTTClient_SSLOptions_HSM* ssl_HSM;  //HSM support
++  };
+ 	/**
+ 	 * The number of entries in the optional serverURIs array. Defaults to 0.
+ 	 */
