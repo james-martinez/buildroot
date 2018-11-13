@@ -27,7 +27,7 @@ define PAHO_MQTT_C_INSTALL_STAGING_CMDS
 endef
 
 define PAHO_MQTT_C_INSTALL_TARGET_CMDS
-        cp -a $(@D)/build/output/libpaho-mqtt*.so* $(STAGING_DIR)/usr/lib/
+        cp -a $(@D)/build/output/libpaho-mqtt*.so* $(TARGET_DIR)/usr/lib/
  endef
 
 
