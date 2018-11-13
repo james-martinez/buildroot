@@ -19,6 +19,7 @@ define PAHO_MQTT_C_BUILD_CMDS
 
 define PAHO_MQTT_C_INSTALL_STAGING_CMDS
      $(INSTALL) -D -m 0755 $(@D)/build/output/libpaho-*.so* $(STAGING_DIR)/usr/lib
+     $(INSTALL) -D -m 0755 $(@D)/src/*.h $(STAGING_DIR)/usr/include
 endef
 
 define PAHO_MQTT_C_INSTALL_TARGET_CMDS
