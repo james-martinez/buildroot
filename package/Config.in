@@ -1595,6 +1595,7 @@ menu "Security"
 	source "package/libsepol/Config.in"
 	source "package/safeclib/Config.in"
 	source "package/opensc/Config.in"
+	source "package/libp11/Config.in"
 	source "package/openct/Config.in"
 endmenu
 
