@@ -1,5 +1,5 @@
-config BR2_PACKAGE_LIBAWS_CPP_SDK
-	bool "libaws-cpp-sdk"
+config BR2_PACKAGE_AWS_CPP_SDK
+	bool "aws-cpp-sdk"
 	select BR2_USE_ZLIB
 	select BR2_USE_OPENSSL
 	select  BR2_USE_LIBCURL

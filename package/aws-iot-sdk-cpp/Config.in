@@ -1,0 +1,8 @@
+config BR2_PACKAGE_AWS_IOT_SDK_CPP
+	bool "aws-iot-sdk-cpp"
+	select BR2_USE_OPENSSL
+	help
+	 SDK for connecting to AWS IoT from a device 
+         using C++
+
+	 https://github.com/aws/aws-iot-device-sdk-cpp/

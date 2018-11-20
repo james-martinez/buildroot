@@ -707,8 +707,9 @@ source "package/mediastreamer/Config.in"
 endmenu
 
 menu "Networking"
-source "package/libaws-cpp-sdk/Config.in"
 source "package/agentpp/Config.in"
+source "package/aws-cpp-sdk/Config.in"
+source "package/aws-iot-sdk-cpp/Config.in"
 source "package/c-ares/Config.in"
 source "package/cppzmq/Config.in"
 source "package/czmq/Config.in"
