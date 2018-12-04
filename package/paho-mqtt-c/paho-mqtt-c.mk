@@ -24,10 +24,12 @@ define PAHO_MQTT_C_INSTALL_STAGING_CMDS
 	$(INSTALL) -D -m 0644 $(@D)/src/MQTTReasonCodes.h $(STAGING_DIR)/usr/include/
 	$(INSTALL) -D -m 0644 $(@D)/src/MQTTSubscribeOpts.h $(STAGING_DIR)/usr/include/
         cp -a $(@D)/build/output/libpaho-mqtt*.so* $(STAGING_DIR)/usr/lib/
+	cp -a $(@D)/build/output/samples/* $(STAGING_DIR)/usr/bin/
 endef
 
 define PAHO_MQTT_C_INSTALL_TARGET_CMDS
         cp -a $(@D)/build/output/libpaho-mqtt*.so* $(TARGET_DIR)/usr/lib/
+	cp -a $(@D)/build/output/samples/* $(TARGET_DIR)/usr/bin/
  endef
 
 
