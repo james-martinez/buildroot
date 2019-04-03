@@ -1,7 +1,6 @@
 kernel=u-boot.bin
-
 gpu_mem=320
-
+enable_uart=1
 disable_splash=1
 
 #display override 800 x 480
