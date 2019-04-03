@@ -1,6 +1,6 @@
 kernel=u-boot.bin
 
-gpu_mem_1024=128
+gpu_mem=320
 
 disable_splash=1
 
