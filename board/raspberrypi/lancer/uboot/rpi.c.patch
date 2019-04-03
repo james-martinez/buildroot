@@ -1,0 +1,16 @@
+--- /board/raspberrypi/rpi/rpi.c	2019-01-14 16:02:36.000000000 -0600
++++ /board/raspberrypi/rpi/rpi.c	2019-04-03 10:45:31.414946000 -0500
+@@ -477,12 +477,7 @@
+ 
+ int ft_board_setup(void *blob, bd_t *bd)
+ {
+-	/*
+-	 * For now, we simply always add the simplefb DT node. Later, we
+-	 * should be more intelligent, and e.g. only do this if no enabled DT
+-	 * node exists for the "real" graphics driver.
+-	 */
+-	lcd_dt_simplefb_add_node(blob);
++
+ 
+ #ifdef CONFIG_EFI_LOADER
+ 	/* Reserve the spin table */

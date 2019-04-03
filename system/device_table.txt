@@ -23,6 +23,7 @@
 /etc/network/if-pre-down.d		d	755	0	0	-	-	-	-	-
 /etc/network/if-post-down.d	d	755	0	0	-	-	-	-	-
 /boot							d	755	0	0	-	-	-	-	-
+/bootload							d	755	0	0	-	-	-	-	-
 /mnt/app/						d	755	0	0	-	-	-	-	-
 /usb							d	755	0	0	-	-	-	-	-
 /usr/sysman					d	755	0	0	-	-	-	-	-
