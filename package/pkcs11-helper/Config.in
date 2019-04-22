@@ -1,0 +1,17 @@
+config BR2_PACKAGE_PKCS11_HELPER
+	bool "pkcs11-helper"
+	depends on !BR2_PREFER_STATIC_LIB
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	PKCS#11 is published standard. PKCS#11 is the de-facto standard to
+	access cryptographic devices.
+
+	pkcs11-helper is a library that simplifies the interaction with
+	PKCS#11 providers for end-user applications.
+
+	  https://github.com/OpenSC/pkcs11-helper
+
+comment "pkcs11-kit needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_PREFER_STATIC_LIB

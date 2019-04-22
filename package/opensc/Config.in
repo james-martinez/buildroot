@@ -1,7 +1,23 @@
 config BR2_PACKAGE_OPENSC
 	bool "opensc"
-select BR2_PACKAGE_PCSC_LITE
-select BR2_PACKAGE_OPENSSL
 	help
 	 Open source smart card tools and middleware. PKCS#11/MiniDriver/Tokend
          https://github.com/OpenSC/OpenSC/
+
+select BR2_PACKAGE_OPENSSL
+
+if BR2_PACKAGE_OPENSC
+
+config BR2_OPENSC_PACKAGE_PCSC_LITE
+	bool "pcsc-lite support"
+	select  BR2_PACKAGE_PCSC_LITE
+	help 
+	use pcsc-lite
+
+config BR2_OPENSC_PACKAGE_OPENCT
+	bool "openct support"
+	select  BR2_PACKAGE_OPENCT
+	help 
+	use openct
+
+endif
