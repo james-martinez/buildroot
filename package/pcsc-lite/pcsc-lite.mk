@@ -12,7 +12,6 @@ PCSC_LITE_DEPENDENCIES = host-pkgconf
 PCSC_LITE_LICENSE = BSD-3c
 PCSC_LITE_LICENSE_FILES = COPYING
 PCSC_LITE_AUTORECONF = YES
-
 PCSC_LITE_CONF_OPT += --disable-libsystemd
 
 # - libudev and libusb are optional
