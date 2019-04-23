@@ -17,6 +17,12 @@ config BR2_PACKAGE_PCSC_LITE_FORCE_LIBUSB
 	help
 	  Select Y if you want to support usb smart card readers.
 
+config BR2_PACKAGE_PCSC_CCID
+	bool "use ccid"
+	select BR2_PACKAGE_CCID
+	help
+	  Select Y if you want to support usb smart card readers and ccid
+
 config BR2_PACKAGE_PCSC_LITE_DEBUGATR
 	bool "enable ATR debug messages"
 	help

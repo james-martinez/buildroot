@@ -1,8 +1,8 @@
 config BR2_PACKAGE_OPENCT
 	bool "openct"
-	select BR2_PACKAGE_LIBTOOL
-	select BR2_PACKAGE_LIBUSB_COMPAT
-	select BR2_PACKAGE_PCSC_LITE
 	help
 	  OpenCT implements drivers for several smart card readers
           https://github.com/OpenSC/openct
+
+select BR2_PACKAGE_LIBTOOL
+select BR2_PACKAGE_LIBUSB_COMPAT
