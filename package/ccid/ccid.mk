@@ -10,7 +10,7 @@ CCID_SITE = https://ccid.apdu.fr/files/
 CCID_LICENSE = LGPLv2.1+
 CCID_LICENSE_FILES = COPYING
 CCID_INSTALL_STAGING = YES
-CCID_DEPENDENCIES = host-pkgconf libusb
+CCID_DEPENDENCIES = host-pkgconf libusb pcsc-lite
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 define CCID_INSTALL_UDEV_RULES
