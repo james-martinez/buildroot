@@ -14,7 +14,6 @@ OPENSSH_CONF_ENV = \
 	LIBS=`$(PKG_CONFIG_HOST_BINARY) --libs openssl`
 OPENSSH_CONF_OPT = \
 	--sysconfdir=/etc/ssh \
-	--with-default-path=$(BR2_SYSTEM_DEFAULT_PATH) \
 	--disable-lastlog \
 	--disable-utmp \
 	--disable-utmpx \
