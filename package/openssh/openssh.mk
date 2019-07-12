@@ -14,7 +14,6 @@ OPENSSH_CONF_ENV = \
 	LIBS=`$(PKG_CONFIG_HOST_BINARY) --libs openssl`
 OPENSSH_CONF_OPTS = \
 	--sysconfdir=/etc/ssh \
-	--with-default-path=$(BR2_SYSTEM_DEFAULT_PATH) \
 	--disable-lastlog \
 	--disable-utmp \
 	--disable-utmpx \
@@ -67,7 +66,7 @@ define OPENSSH_INSTALL_SYSTEMD_SYSUSERS
 endef
 else
 define OPENSSH_USERS
-	sshd -1 sshd -1 * /var/empty - - SSH drop priv user
+	#sshd -1 sshd -1 * /var/empty - - SSH drop priv user
 endef
 endif
 
