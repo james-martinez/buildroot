@@ -66,7 +66,7 @@ define OPENSSH_INSTALL_SYSTEMD_SYSUSERS
 endef
 else
 define OPENSSH_USERS
-	sshd -1 sshd -1 * /var/empty - - SSH drop priv user
+	#sshd -1 sshd -1 * /var/empty - - SSH drop priv user
 endef
 endif
 
