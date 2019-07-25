@@ -29,20 +29,20 @@
 			cs-gpios = <&gpio 18 1>;
 			status = "okay";
 
-			sc16is752: sc16is752@0 {
-				compatible = "nxp,sc16is752";
+			sc16is762: sc16is762@0 {
+				compatible = "nxp,sc16is762";
 				reg = <0>; /* CE0 */
-				clocks = <&sc16is752_clk>;
+				clocks = <&sc16is762_clk>;
 				interrupt-parent = <&gpio>;
 				interrupts = <24 2>; /* IRQ_TYPE_EDGE_FALLING */
 				#gpio-controller;
 				#gpio-cells = <2>;
-				spi-max-frequency = <4000000>;
+				spi-max-frequency = <15000000>;
 
-				sc16is752_clk: sc16is752_clk {
+				sc16is762_clk: sc16is762_clk {
 					compatible = "fixed-clock";
 					#clock-cells = <0>;
-					clock-frequency = <14745600>;
+					clock-frequency = <80000000>;
 				};
 			};
 		};
@@ -56,6 +56,6 @@
 	};
 
     __overrides__ {
-      int_pin = <&sc16is752>,"interrupts:0";
+      int_pin = <&sc16is762>,"interrupts:0";
     };
 };

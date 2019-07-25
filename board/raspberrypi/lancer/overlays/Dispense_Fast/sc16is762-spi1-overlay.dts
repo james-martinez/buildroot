@@ -30,7 +30,7 @@
 			status = "okay";
 
 			sc16is762: sc16is762@0 {
-				compatible = "nxp,sc16is752";
+				compatible = "nxp,sc16is762";
 				reg = <0>; /* CE0 */
 				clocks = <&sc16is76a2_clk>;
 				interrupt-parent = <&gpio>;
@@ -56,6 +56,6 @@
 	};
 
     __overrides__ {
-      int_pin = <&sc16is752>,"interrupts:0";
+      int_pin = <&sc16is762>,"interrupts:0";
     };
 };
