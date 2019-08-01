@@ -1,0 +1,11 @@
+--- /drivers/rtc/rtc-pcf8523.c	2019-07-25 08:05:44.000000000 -0500
++++ /drivers/rtc/rtc-pcf8523.c	2019-07-31 13:11:38.251580806 -0500
+@@ -370,7 +370,7 @@
+ 	if (err < 0)
+ 		return err;
+ 
+-	err = pcf8523_set_pm(client, 0);
++	err = pcf8523_set_pm(client, 5);
+ 	if (err < 0)
+ 		return err;
+ 

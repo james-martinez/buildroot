@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RPI_FIRMWARE_VERSION = 36f991382326907419f64917624427e59fd8e4a0
+RPI_FIRMWARE_VERSION = 3822340923e5cddc772492386d82ba00f4275d62
 RPI_FIRMWARE_SITE = $(call github,raspberrypi,firmware,$(RPI_FIRMWARE_VERSION))
 RPI_FIRMWARE_LICENSE = BSD-3-Clause
 RPI_FIRMWARE_LICENSE_FILES = boot/LICENCE.broadcom
@@ -23,6 +23,12 @@ define RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
 	for ovldtb in  $(@D)/boot/overlays/*.dtbo; do \
 		$(INSTALL) -D -m 0644 $${ovldtb} $(BINARIES_DIR)/rpi-firmware/overlays/$${ovldtb##*/} || exit 1; \
 	done
+endef
+else
+# Still create the directory, so a genimage.cfg can include it independently of
+# whether _INSTALL_DTB_OVERLAYS is selected or not.
+define RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
+	$(INSTALL) -d $(BINARIES_DIR)/rpi-firmware/overlays
 endef
 endif
 

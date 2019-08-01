@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RPI_USERLAND_VERSION = a7976021a89451de0d008aa48f16c4e88872899b
+RPI_USERLAND_VERSION = 2f85f2db007fb7b15ed1b485f42eae4cc6bc2bf4
 RPI_USERLAND_SITE = $(call github,raspberrypi,userland,$(RPI_USERLAND_VERSION))
 RPI_USERLAND_LICENSE = BSD-3-Clause
 RPI_USERLAND_LICENSE_FILES = LICENCE
@@ -56,7 +56,7 @@ endif # BR2_PACKAGE_RPI_USERLAND_HELLO
 define RPI_USERLAND_POST_TARGET_CLEANUP
 	rm -f $(TARGET_DIR)/etc/init.d/vcfiled
 	rm -f $(TARGET_DIR)/usr/share/install/vcfiled
-	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share/install
+	#rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share/install
 	rm -Rf $(TARGET_DIR)/usr/src
 endef
 RPI_USERLAND_POST_INSTALL_TARGET_HOOKS += RPI_USERLAND_POST_TARGET_CLEANUP
