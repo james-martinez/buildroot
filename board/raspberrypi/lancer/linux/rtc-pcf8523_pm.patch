@@ -5,7 +5,7 @@
  		return err;
  
 -	err = pcf8523_set_pm(client, 0);
-+	err = pcf8523_set_pm(client, 5);
++	err = pcf8523_set_pm(client, REG_CONTROL3_PM_DSM | REG_CONTROL3_PM_BLD);
  	if (err < 0)
  		return err;
  
