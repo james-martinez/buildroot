@@ -1,16 +1,5 @@
 --- /arch/arm/boot/dts/bcm2710-rpi-3-b.dts	2018-03-22 11:42:28.000000000 -0500
 +++ /arch/arm/boot/dts/bcm2710-rpi-3-b.dts	2019-04-04 08:35:47.004594175 -0500
-@@ -12,8 +12,8 @@
- 	};
- 
- 	aliases {
--		serial0 = &uart1;
--		serial1 = &uart0;
-+		serial0 = &uart0;
-+		serial1 = &uart1;
- 	};
- };
- 
 @@ -28,6 +28,16 @@
  		brcm,function = <1>; /* output */
  	};
