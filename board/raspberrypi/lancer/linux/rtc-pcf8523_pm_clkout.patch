@@ -1,5 +1,5 @@
---- output/build/linux-custom/drivers/rtc/rtc-pcf8523.c	2019-07-30 08:37:58.000000000 -0500
-+++ ../rtc-pcf8523.c	2019-08-06 16:00:25.011630195 -0500
+--- /drivers/rtc/rtc-pcf8523.c	2019-07-30 08:37:58.000000000 -0500
++++ /drivers/rtc/rtc-pcf8523.c	2019-08-06 16:00:25.011630195 -0500
 @@ -35,6 +35,21 @@
  #define REG_MONTHS   0x08
  #define REG_YEARS    0x09
