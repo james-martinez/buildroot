@@ -1,0 +1,132 @@
+--- /arch/arm/boot/dts/bcm2710-rpi-3-b-plus.dts	2018-03-22 11:42:28.000000000 -0500
++++ /arch/arm/boot/dts/bcm2710-rpi-3-b-plus.dts	2019-04-04 08:35:20.007606078 -0500
+@@ -28,11 +28,21 @@
+ 		brcm,function = <1>; /* output */
+ 	};
+ 
++	spi1_pins: spi1_pins {
++		brcm,pins = <19 20 21>;
++		brcm,function = <3>; /* alt4 */
++	};
++
++	spi1_cs_pins: spi1_cs_pins {
++		brcm,pins = <18>;
++		brcm,function = <1>; /* output */
++	};	
++	
+ 	i2c0_pins: i2c0 {
+ 		brcm,pins = <0 1>;
+ 		brcm,function = <4>;
+ 	};
+-
++	
+ 	i2c1_pins: i2c1 {
+ 		brcm,pins = <2 3>;
+ 		brcm,function = <4>;
+@@ -55,16 +65,21 @@
+ 		brcm,pull = <0>;
+ 	};
+ 
++	fake_bt_cts: fake_bt_cts {
++		brcm,pins = <31>;
++		brcm,function = <1>; /* output */
++	};
++
+ 	uart0_pins: uart0_pins {
+-		brcm,pins = <32 33>;
+-		brcm,function = <7>; /* alt3=UART0 */
++		brcm,pins = <14 15>;
++		brcm,function = <4>; /* alt0=UART0 */
+ 		brcm,pull = <0 2>;
+ 	};
+ 
+ 	uart1_pins: uart1_pins {
+-		brcm,pins;
+-		brcm,function;
+-		brcm,pull;
++		brcm,pins = <32 33>;
++		brcm,function = <2>; /* alt5=UART1 */
++		brcm,pull = <0 2>;
+ 	};
+ 
+ 	audio_pins: audio_pins {
+@@ -94,13 +109,13 @@
+ 
+ &uart0 {
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&uart0_pins &bt_pins>;
++	pinctrl-0 = <&uart0_pins>;
+ 	status = "okay";
+ };
+ 
+ &uart1 {
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&uart1_pins>;
++	pinctrl-0 = <&uart1_pins &bt_pins &fake_bt_cts>;
+ 	status = "okay";
+ };
+ 
+@@ -126,6 +141,40 @@
+ 	};
+ };
+ 
++&spi1 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi1_pins &spi1_cs_pins>;
++	cs-gpios = <&gpio 18 1>;
++	status = "okay";
++
++	sc16is752: sc16is752@0 {
++		compatible = "nxp,sc16is752";
++		reg = <0>; /* CE0 */
++		clocks = <&sc16is752_clk>;
++		interrupt-parent = <&gpio>;
++		interrupts = <24 2>; /* IRQ_TYPE_EDGE_FALLING */
++		#gpio-controller;
++		#gpio-cells = <2>;
++		spi-max-frequency = <4000000>;
++
++		sc16is752_clk: sc16is752_clk {
++			compatible = "fixed-clock";
++			#clock-cells = <0>;
++			clock-frequency = <14745600>;
++		};
++	};
++};
++
++&aux {
++	status = "okay";
++};
++
++&watchdog {
++	status = "okay";
++};		
++
+ &i2c0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c0_pins>;
+@@ -136,6 +185,13 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c1_pins>;
+ 	clock-frequency = <100000>;
++	status = "okay";
++	
++	pcf8523: pcf8523@68 {
++		compatible = "nxp,pcf8523";
++		reg = <0x68>;
++		status = "okay";
++	};	
+ };
+ 
+ &i2c2 {
+@@ -156,7 +212,7 @@
+ 
+ 	pwr_led: pwr {
+ 		label = "led1";
+-		linux,default-trigger = "default-on";
++		linux,default-trigger = "heartbeat";
+ 		gpios = <&expgpio 2 GPIO_ACTIVE_LOW>;
+ 	};
+ };
