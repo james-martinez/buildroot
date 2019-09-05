@@ -79,17 +79,17 @@
 -	cs-gpios = <&gpio 8 1>, <&gpio 7 1>;
 +	cs-gpios = <&gpio 8 1>;
 +	
-+	sc16is762: sc16is762@0 {
++	sc16is762_spi0: sc16is762@0 {
 +		compatible = "nxp,sc16is762";
 +		reg = <0>; /* CE0 */
-+		clocks = <&sc16is762_clk>;
++		clocks = <&sc16is762_clk_spi0>;
 +		interrupt-parent = <&gpio>;
 +		interrupts = <23 2>; /* IRQ_TYPE_EDGE_FALLING */
 +		#gpio-controller;
 +		#gpio-cells = <2>;
 +		spi-max-frequency = <15000000>;
 +
-+		sc16is762_clk: sc16is762_clk {
++		sc16is762_clk_spi0: sc16is762_clk {
 +			compatible = "fixed-clock";
 +			#clock-cells = <0>;
 +			clock-frequency = <80000000>;
@@ -119,17 +119,17 @@
 -		#address-cells = <1>;
 -		#size-cells = <0>;
 -		spi-max-frequency = <125000000>;
-+	sc16is762: sc16is762@0 {
++	sc16is762_spi1: sc16is762@0 {
 +		compatible = "nxp,sc16is762";
 +		reg = <0>; /* CE0 */
-+		clocks = <&sc16is762_clk>;
++		clocks = <&sc16is762_clk_spi1>;
 +		interrupt-parent = <&gpio>;
 +		interrupts = <24 2>; /* IRQ_TYPE_EDGE_FALLING */
 +		#gpio-controller;
 +		#gpio-cells = <2>;
 +		spi-max-frequency = <15000000>;
 +
-+		sc16is762_clk: sc16is762_clk {
++		sc16is762_clk_spi1: sc16is762_clk {
 +			compatible = "fixed-clock";
 +			#clock-cells = <0>;
 +			clock-frequency = <80000000>;
