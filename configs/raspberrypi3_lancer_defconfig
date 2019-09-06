@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Buildroot 2018.05-gf0a7f14 Configuration
+# Buildroot 2018.05-00018-g0e0c511 Configuration
 #
 BR2_HAVE_DOT_CONFIG=y
 BR2_HOST_GCC_AT_LEAST_4_5=y
@@ -443,9 +443,9 @@ BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
 # BR2_LINUX_KERNEL_CUSTOM_GIT is not set
 # BR2_LINUX_KERNEL_CUSTOM_HG is not set
 # BR2_LINUX_KERNEL_CUSTOM_SVN is not set
-BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="$(call github,raspberrypi,linux,c117a8bccf37bfba323065b566cf999ed4629a4a)/linux-c117a8bccf37bfba323065b566cf999ed4629a4a.tar.gz"
+BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="$(call github,raspberrypi,linux,7688b39276ff9952df381d79de63b258e73971ce)/linux-7688b39276ff9952df381d79de63b258e73971ce.tar.gz"
 BR2_LINUX_KERNEL_VERSION="custom"
-BR2_LINUX_KERNEL_PATCH="board/raspberrypi/lancer/linux/logo_lancer.patch board/raspberrypi/lancer/linux/logo_cpus.patch board/raspberrypi/lancer/linux/pi3b_dts.patch board/raspberrypi/lancer/linux/pi3bplus_dts.patch"
+BR2_LINUX_KERNEL_PATCH="board/raspberrypi/lancer/linux/logo_lancer.patch board/raspberrypi/lancer/linux/logo_cpus.patch board/raspberrypi/lancer/linux/pi3b_dts_hs_dual.patch board/raspberrypi/lancer/linux/pi3bplus_dts_hs_dual.patch board/raspberrypi/lancer/linux/rtc-pcf8523_pm_clkout.patch"
 # BR2_LINUX_KERNEL_USE_DEFCONFIG is not set
 # BR2_LINUX_KERNEL_USE_ARCH_DEFAULT_CONFIG is not set
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
@@ -1837,7 +1837,8 @@ BR2_PACKAGE_LIBUSB_COMPAT=y
 # BR2_PACKAGE_NEARDAL is not set
 # BR2_PACKAGE_OWFS is not set
 BR2_PACKAGE_PCSC_LITE=y
-# BR2_PACKAGE_PCSC_LITE_FORCE_LIBUSB is not set
+BR2_PACKAGE_PCSC_LITE_FORCE_LIBUSB=y
+BR2_PACKAGE_PCSC_CCID=y
 # BR2_PACKAGE_PCSC_LITE_DEBUGATR is not set
 # BR2_PACKAGE_PCSC_LITE_EMBEDDED is not set
 BR2_PACKAGE_TSLIB=y
@@ -2215,8 +2216,10 @@ BR2_PACKAGE_TZDATA=y
 # BR2_PACKAGE_LIBSEPOL is not set
 # BR2_PACKAGE_SAFECLIB is not set
 BR2_PACKAGE_OPENSC=y
+BR2_OPENSC_PACKAGE_PCSC_LITE=y
+# BR2_OPENSC_PACKAGE_OPENCT is not set
 BR2_PACKAGE_LIBP11=y
-BR2_PACKAGE_OPENCT=y
+# BR2_PACKAGE_OPENCT is not set
 
 #
 # Text and terminal handling
@@ -2485,7 +2488,10 @@ BR2_PACKAGE_OPENSSH=y
 # BR2_PACKAGE_PIMD is not set
 # BR2_PACKAGE_PIXIEWPS is not set
 # BR2_PACKAGE_POUND is not set
-# BR2_PACKAGE_PPPD is not set
+BR2_PACKAGE_PPPD=y
+# BR2_PACKAGE_PPPD_FILTER is not set
+# BR2_PACKAGE_PPPD_RADIUS is not set
+# BR2_PACKAGE_PPPD_OVERWRITE_RESOLV_CONF is not set
 # BR2_PACKAGE_PPTP_LINUX is not set
 # BR2_PACKAGE_PRIVOXY is not set
 # BR2_PACKAGE_PROFTPD is not set
@@ -2516,7 +2522,7 @@ BR2_PACKAGE_OPENSSH=y
 # BR2_PACKAGE_S6_NETWORKING is not set
 # BR2_PACKAGE_SAMBA4 is not set
 # BR2_PACKAGE_SCONESERVER is not set
-# BR2_PACKAGE_SER2NET is not set
+BR2_PACKAGE_SER2NET=y
 # BR2_PACKAGE_SHAIRPORT_SYNC is not set
 # BR2_PACKAGE_SHELLINABOX is not set
 # BR2_PACKAGE_SMCROUTE is not set
