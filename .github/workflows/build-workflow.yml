@@ -1,7 +1,10 @@
 name: Building Raspberry PI3 RootFS
 
-on: [push]
-
+on:
+    push:
+        branches:
+            - 2018.05
+        
 jobs:
 
     name: Raspberry PI3  Build
