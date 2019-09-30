@@ -1,14 +1,11 @@
-name: Building Raspberry PI3 RootFS
+name: Greeting from Mona
 
-on:
-    push:
-        branches:
-            - 2018.05
-        
+on: push
+
 jobs:
-
-    name: Raspberry PI3  Build
-    runs-on: ubuntu-16.04
+  my-job:
+    name: My Job
+    runs-on: ubuntu-latest
     steps:
     - name: Print a greeting
       env:
