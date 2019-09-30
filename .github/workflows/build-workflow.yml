@@ -7,8 +7,9 @@ jobs:
     name: Build
     runs-on: ubuntu-16.04
     steps:
-    - name: Print a greeting
+    - name: Set defconfig
       env:
         br_config: raspberrypi3_lancer_defconfig
       run: make $br_config
+    - name: Build
       run: make
