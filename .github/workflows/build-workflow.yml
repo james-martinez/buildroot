@@ -1,17 +1,14 @@
-name: Greeting from Mona
+name: Raspberry PI3 RootFS Build
 
 on: push
 
 jobs:
   my-job:
-    name: My Job
-    runs-on: ubuntu-latest
+    name: Build
+    runs-on: ubuntu-16.04
     steps:
     - name: Print a greeting
       env:
-        MY_VAR: Hi there! My name is
-        FIRST_NAME: Mona
-        MIDDLE_NAME: The
-        LAST_NAME: Octocat
-      run: |
-        echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
+        br_config: raspberrypi3_lancer_defconfig
+      run: make $br_config
+      run: make
