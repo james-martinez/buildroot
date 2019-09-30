@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-16.04
     steps:
     - name: Set defconfig
-    uses: LancerCorp/buildroot@2018.05
+    - uses: actions/checkout@v1
       env:
-        br_config: raspberrypi3_lancer
+        br_config: raspberrypi3_lancer+defconfig
       run: make $br_config
     - name: Build
       run: make
