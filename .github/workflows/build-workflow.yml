@@ -9,7 +9,7 @@ jobs:
     steps:
     - name: Set defconfig
       env:
-        br_config: raspberrypi3_lancer_defconfig
+        br_config: raspberrypi3_lancer
       run: make $br_config
     - name: Build
       run: make
