@@ -13,6 +13,7 @@ jobs:
         ref: 2018.05
       env:
         br_config: raspberrypi3_lancer_defconfig
-      run: make $br_config
     - name: Build
-      run: make
+      run: |
+        make {{ $br_config}}
+        make
