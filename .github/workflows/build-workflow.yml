@@ -14,5 +14,7 @@ jobs:
         br_config: raspberrypi3_lancer_defconfig
     - name: Build
       run: |
+        apt-get update
+        apt-get install -y build-essential bc python 
         make raspberrypi3_lancer_defconfig
         make
