@@ -15,5 +15,5 @@ jobs:
         br_config: raspberrypi3_lancer_defconfig
     - name: Build
       run: | 
-        make raspberrypi3_lancer_defconfig
+        make raspberrypi_dev_defconfig
         make
