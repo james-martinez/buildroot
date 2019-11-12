@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: docker://dvjhwf8q/lanbuntu:latest
+    - uses: docker://dvjhwf8qp/lanbuntu:latest
       with:
         ref: 2018.05
       env:
