@@ -5,16 +5,15 @@ on: push
 jobs:
   my-job:
     name: Build
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - uses: docker://dvjhwf8q/lanbuntu:latest
       with:
         ref: 2018.05
       env:
         br_config: raspberrypi3_lancer_defconfig
     - name: Build
-      run: |
-        apt-get update
-        apt-get install -y build-essential bc python 
+      run: | 
         make raspberrypi3_lancer_defconfig
         make
