@@ -139,10 +139,10 @@ BR2_TOOLCHAIN_EXTERNAL=y
 # Sourcery CodeBench toolchains available for the EABI ABI
 #
 BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
-BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
-# BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED is not set
-BR2_TOOLCHAIN_EXTERNAL_URL="https://github.com/LancerCorp/tools/archive/arm-cortexa9_neon_lancer49-linux-gnueabihf.tar.gz"
-BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX="arm-cortexa9_neon_lancer49-linux-gnueabihf"
+# BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD is not set
+BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED=y
+BR2_TOOLCHAIN_EXTERNAL_PATH="/usr/local/xtools/arm-cortexa9_neon_lancer49-linux-gnueabihf"	
+BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX="arm-cortexa9_neon_lancer49-linux-gnueabihf"	
 BR2_TOOLCHAIN_EXTERNAL_PREFIX="arm-cortexa9_neon_lancer49-linux-gnueabihf"
 BR2_TOOLCHAIN_EXTERNAL_GLIBC=y
 # BR2_TOOLCHAIN_EXTERNAL_HEADERS_3_14 is not set
