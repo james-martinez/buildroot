@@ -10,7 +10,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: docker://dvjhwf8qp/lanbuntu:latest
       with:
-        ref: 2018.05
+        ref: 2014.05
       env:
         br_config: wandboard_lancer_defconfig
     - name: Build
