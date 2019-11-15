@@ -13,5 +13,5 @@ jobs:
         ref: 2014.05
     - name: Build
       run: | 
-        make wandboard_lancer_defconfig"
+        make wandboard_lancer_defconfig
         make
