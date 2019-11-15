@@ -11,9 +11,7 @@ jobs:
     - uses: docker://dvjhwf8qp/lanbuntu:latest
       with:
         ref: 2018.05
-      env:
-        br_config: raspberrypi3_lancer_defconfig
     - name: Build
       run: | 
-        make "$br_config"
+        make raspberrypi3_lancer_defconfig
         make
