@@ -1,17 +1,19 @@
-name: CI
+name: I.MX6 RootFS Build
 
-on: [push]
+on: push
 
 jobs:
-  build:
-
+  my-job:
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+    - uses: docker://dvjhwf8qp/lanbuntu:latest
+      with:
+        ref: 2018.05
+      env:
+        br_config: wandboard_lancer_defconfig
+    - name: Build
+      run: | 
+        make "$br_config"
+        make
