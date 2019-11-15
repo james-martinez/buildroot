@@ -11,9 +11,7 @@ jobs:
     - uses: docker://dvjhwf8qp/lanbuntu:latest
       with:
         ref: 2014.05
-      env:
-        br_config: wandboard_lancer_defconfig
     - name: Build
       run: | 
-        make "$br_config"
+        make wandboard_lancer_defconfig"
         make
