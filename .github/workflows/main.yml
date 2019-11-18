@@ -7,8 +7,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
     - uses: docker://dvjhwf8qp/lanbuntu:latest
+    - uses: actions/checkout@v1      
       with:
         ref: 2018.05
     - name: Build
