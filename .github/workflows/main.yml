@@ -14,5 +14,6 @@ jobs:
       with:
         ref: 2014.05
     - name: Build rootfs
-      run: make wandboard_lancer_defconfig
-      run: make
+      run: |
+        make wandboard_lancer_defconfig
+        make
