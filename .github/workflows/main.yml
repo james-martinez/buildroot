@@ -6,3 +6,4 @@ jobs:
   my-job:
     steps:
       container:  dvjhwf8qp/lanbuntu:latest
+      run: echo "hello"
