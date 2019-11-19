@@ -4,5 +4,6 @@ on: push
 
 jobs:
   my-job:
-    container: dvjhwf8qp/lanbuntu:latest
+    container: 
+      image: dvjhwf8qp/lanbuntu:latest
     
