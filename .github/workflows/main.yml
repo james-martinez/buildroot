@@ -7,4 +7,5 @@ jobs:
     runs-on: ubuntu-latest
     #container: dvjhwf8qp/lanbuntu:latest
       steps:
+      - name: Say Hello
         run: echo "hello"
