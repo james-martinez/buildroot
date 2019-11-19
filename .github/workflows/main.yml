@@ -6,12 +6,12 @@ jobs:
   my-job:
     steps:
       - name : Docker
-          uses: docker://dvjhwf8qp/lanbuntu:latest
-          - name: Checkout
-            uses: actions/checkout@v1
-            with:
-              ref: 2014.05
-          - name: Build rootfs
-            run: |
+        uses: docker://dvjhwf8qp/lanbuntu:latest
+        - name: Checkout
+          uses: actions/checkout@v1
+          with:
+            ref: 2014.05
+        - name: Build rootfs
+          run: |
               make wandboard_lancer_defconfig
               make
