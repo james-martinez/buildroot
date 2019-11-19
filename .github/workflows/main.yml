@@ -5,14 +5,13 @@ on: push
 jobs:
   my-job:
     name: Build
-    runs-on: ubuntu-16.04
+    container:
+      image: dvjhwf8qp/lanbuntu:latest
     steps:
     - name: Checkout
       uses: actions/checkout@v1
       with:
         ref: 2014.05
-    - name: Download tools
-      run: wget -nv https://github.com/LancerCorp/tools/archive/master.tar.gz && tar -xf master.tar.gz && mv tools-master /usr/local/xtools && rm master.tar.gz
     - name: Build rootfs
       run: |
         make wandboard_lancer_defconfig
