@@ -2,6 +2,7 @@ name: I.MX6 RootFS Build
 on: push
 jobs:
   build:
+    runs-on: [ubuntu-latest]
     container:
       image: dvjhwf8qp/lanbuntu:latest
     steps:
