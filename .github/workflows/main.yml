@@ -4,7 +4,9 @@ jobs:
   build:
     container:
       image: dvjhwf8qp/lanbuntu:latest
-    #steps:
+    steps:
+      - run: ls /usr/local/xtools 
+      
       #- name: Build rootfs
        # uses: docker://dvjhwf8qp/lanbuntu:latest
        # with:
