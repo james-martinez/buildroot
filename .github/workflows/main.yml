@@ -2,8 +2,9 @@ name: I.MX6 RootFS Build
 on: push
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build rootfs
-        uses: docker://dvjhwf8qp/lanbuntu:latest
-        run: ls /usr/local/xtools
+    container:
+      image: dvjhwf8qp/lanbuntu:latest
+    #steps:
+      #- name: Build rootfs
+       # uses: docker://dvjhwf8qp/lanbuntu:latest
+       # with:
