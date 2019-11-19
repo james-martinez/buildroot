@@ -6,7 +6,7 @@ on: push
 jobs:
   my-job:
     name: My Job
-     container: centos:centos7
+    container: centos:centos7
     steps:
     - name: Print a greeting
       env:
