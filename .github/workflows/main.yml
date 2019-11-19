@@ -1,17 +1,14 @@
 name: Raspberry PI3 RootFS Build
-
 on: push
-
 jobs:
-  my-job:
-    name: Build
-    runs-on: ubuntu-latest
+  build:
+    runs-on: [ubuntu-latest]
+    container:
+      image: dvjhwf8qp/lanbuntu:latest
     steps:
-    - uses: docker://dvjhwf8qp/lanbuntu:latest
-    - uses: actions/checkout@v1      
-      with:
-        ref: 2018.05
-    - name: Build
-      run: | 
-        make raspberrypi3_lancer_defconfig
-        make
+      - uses: actions/checkout@v1
+        with:
+          branch: 2018.05
+      - run: |
+          make raspberrypi3_lancer_defconfig
+          make
