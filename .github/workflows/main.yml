@@ -5,12 +5,12 @@ on: push
 jobs:
   my-job:
     container: dvjhwf8qp/lanbuntu:latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-      with:
-        ref: 2014.05
-    - name: Build rootfs
-      run: |
-        make wandboard_lancer_defconfig
-        make
+      steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          ref: 2014.05
+      - name: Build rootfs
+        run: |
+          make wandboard_lancer_defconfig
+          make
