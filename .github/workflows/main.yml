@@ -6,8 +6,9 @@ jobs:
     container:
       image: dvjhwf8qp/lanbuntu:latest
     steps:
-      - run: ls /usr/local/xtools 
-      
-      #- name: Build rootfs
-       # uses: docker://dvjhwf8qp/lanbuntu:latest
-       # with:
+      - uses: actions/checkout@v1
+        with:
+          branch: 2014.05
+      - run: |
+          make wandboard_lancer_defconfig 
+          make
