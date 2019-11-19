@@ -9,11 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Print a greeting
-      #uses: docker://dvjhwf8qp/lanbuntu:latest
-      env:
-        MY_VAR: Hi there! My name is
-        FIRST_NAME: Mona
-        MIDDLE_NAME: The
-        LAST_NAME: Octocat
-      run: |
-        echo $MY_VAR $FIRST_NAME
+      uses: docker://dvjhwf8qp/lanbuntu:latest
+        run: |
+          echo "helli"
