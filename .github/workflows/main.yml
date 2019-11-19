@@ -7,10 +7,12 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      uses: docker://dvjhwf8qp/lanbuntu:latest
-      uses: actions/checkout@v1
-      with:
-        ref: 2014.05
-    - name: Build
+    - name: Pull docker image
+        uses: docker://dvjhwf8qp/lanbuntu:latest
+    - name: Checkout repo
+        uses: actions/checkout@v1
+        with:
+          ref: 2014.05
+    - name: Build rootfs
       run: make wandboard_lancer_defconfig
       run: make
