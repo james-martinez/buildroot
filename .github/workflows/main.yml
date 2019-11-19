@@ -4,7 +4,6 @@ on: push
 
 jobs:
   my-job:
-    name: Build
     container:
       image: dvjhwf8qp/lanbuntu:latest
     steps:
