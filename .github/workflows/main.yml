@@ -6,7 +6,7 @@ on: push
 jobs:
   my-job:
     name: My Job
-    - uses: docker://centos:centos7
+    runs-on: docker://dvjhwf8qp/lanbuntu:latest
     steps:
     - name: Print a greeting
       env:
