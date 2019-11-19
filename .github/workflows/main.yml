@@ -6,7 +6,8 @@ on: push
 jobs:
   my-job:
     name: My Job
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    container: centos:centos7
     steps:
     - name: Print a greeting
       env:
