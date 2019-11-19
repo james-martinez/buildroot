@@ -9,6 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Print a greeting
-      uses: docker://dvjhwf8qp/lanbuntu:latest
+      uses: docker://alpine:3.8
       run: |
         echo "helli"
