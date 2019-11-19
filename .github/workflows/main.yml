@@ -5,8 +5,9 @@ on: push
 
 jobs:
   my-job:
-    name: My Job
+    name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: Print a greeting
-      uses: docker://alpine:3.8
+    - name: Build rootfs
+      uses: docker://dvjhwf8qp/lanbuntu:latest
+      run: echo "test test"
