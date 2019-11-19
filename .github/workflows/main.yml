@@ -5,5 +5,5 @@ on: push
 jobs:
   my-job:
     container:  dvjhwf8qp/lanbuntu:latest
-      steps:
-        run: echo "hello"
+    steps:
+      run: echo "hello"
