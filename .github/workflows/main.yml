@@ -10,5 +10,3 @@ jobs:
     steps:
     - name: Print a greeting
       uses: docker://alpine:3.8
-      run: |
-        echo "helli"
