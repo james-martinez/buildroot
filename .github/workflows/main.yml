@@ -5,8 +5,7 @@ on: push
 jobs:
   my-job:
     steps:
-      - name : Docker
-        uses: docker://dvjhwf8qp/lanbuntu:latest
+      container:  dvjhwf8qp/lanbuntu:latest
         - name: Checkout
           uses: actions/checkout@v1
           with:
