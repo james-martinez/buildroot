@@ -9,5 +9,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Build rootfs
-      uses: docker://dvjhwf8qp/lanbuntu:latest
       run: echo "test test"
+      uses: docker://dvjhwf8qp/lanbuntu:latest
