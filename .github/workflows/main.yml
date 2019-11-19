@@ -4,8 +4,7 @@ on: push
 
 jobs:
   my-job:
-    container:
-      image: dvjhwf8qp/lanbuntu:latest
+    container: dvjhwf8qp/lanbuntu:latest
     steps:
     - name: Checkout
       uses: actions/checkout@v1
