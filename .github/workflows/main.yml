@@ -8,7 +8,7 @@ jobs:
         with:
           branch: 2014.05
       - uses: docker://docker.pkg.github.com/james-martinez/ubuntu/lanbuntu
-        with:
+        env:
           username: "${{secrets.DOCKER_USERNAME}}"
           password: "${{secrets.DOCKER_TOKEN}}"
       - run: |
