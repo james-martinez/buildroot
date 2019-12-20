@@ -4,7 +4,7 @@ jobs:
   build:
     runs-on: [ubuntu-latest]
     container:
-      image:  docker.pkg.github.com/james-martinez/ubuntu/lanbuntu
+      image: docker.pkg.github.com/james-martinez/ubuntu/lanbuntu
       env:
         login-server: docker.pkg.github.com
         username: $GITHUB_ACTOR
