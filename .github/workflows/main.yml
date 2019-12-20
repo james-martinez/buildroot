@@ -2,12 +2,13 @@ name: I.MX6 RootFS Build
 on: push
 jobs:
   login:
-    - name: Login to github
-      uses: azure/docker-login@v1
-      with:
-        login-server: docker.pkg.github.com
-        username: $GITHUB_ACTOR
-        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Login to github
+        uses: azure/docker-login@v1
+        with:
+          login-server: docker.pkg.github.com
+          username: $GITHUB_ACTOR
+          password: ${{ secrets.GITHUB_TOKEN }}
   build:
     runs-on: [ubuntu-latest]
     steps:
