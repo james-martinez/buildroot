@@ -10,6 +10,7 @@ jobs:
           login-server: docker.pkg.github.com
           username: $GITHUB_ACTOR
           password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker://docker.pkg.github.com/james-martinez/ubuntu/lanbuntu
       - uses: actions/checkout@v1
         with:
           branch: 2014.05
