@@ -8,7 +8,7 @@ jobs:
       env:
         login-server: docker.pkg.github.com
         username: $GITHUB_ACTOR
-        password: ${{ secrets.DOCKER_TOKEN }}   
+        password: $secrets.DOCKER_TOKEN  
     steps:
       - uses: actions/checkout@v1
         with:
