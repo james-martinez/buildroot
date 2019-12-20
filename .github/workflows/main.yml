@@ -14,6 +14,10 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - uses: docker://docker.pkg.github.com/james-martinez/ubuntu/lanbuntu
+        with:
+          login-server: docker.pkg.github.com
+          username: $GITHUB_ACTOR
+          password: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/checkout@v1
         with:
           branch: 2014.05
