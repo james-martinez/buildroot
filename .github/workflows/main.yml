@@ -1,5 +1,8 @@
 name: I.MX6 RootFS Build
 on: push
+env:
+  username: ${{ secrets.DOCKER_USERNAME }}
+  password: ${{ secrets.DOCKER_TOKEN }}
 jobs:
   build:
     runs-on: [ubuntu-latest]
