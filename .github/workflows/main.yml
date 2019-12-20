@@ -3,17 +3,12 @@ on: push
 jobs:
   build:
     runs-on: [ubuntu-latest]
+    container: dvjhwf8qp/lanbuntu
     steps:
-      - name: Login to registry
-        run: docker login docker.pkg.github.com -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
-      - name: Pull container  
-        run: docker run -it docker.pkg.github.com/james-martinez/ubuntu/lanbuntu
-
-        
-#           uses: actions/checkout@v1
-#           with:
-#         branch: 2014.05
-#       -  name : Build 
-#          run: |
-#           make wandboard_lancer_defconfig 
-#           make
+      - uses: actions/checkout@v1
+        with:
+          branch: 2014.05
+      - name : Build 
+        run: |
+          make wandboard_lancer_defconfig 
+          make
