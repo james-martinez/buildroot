@@ -1,19 +1,18 @@
 name: I.MX6 RootFS Build
 on: push
 jobs:
-  login:
-    runs-on: [ubuntu-latest]
-    steps:
-      - name: Login
-        run: docker login docker.pkg.github.com -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
   build:
     runs-on: [ubuntu-latest]
-    container:
-      image: docker.pkg.github.com/james-martinez/ubuntu/lanbuntu
     steps:
-      - uses: actions/checkout@v1
+      - name: Login to registry
+        run: docker login docker.pkg.github.com -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+      - name: Pull container  
+        container:
+        image: docker.pkg.github.com/james-martinez/ubuntu/lanbuntu
+        uses: actions/checkout@v1
         with:
           branch: 2014.05
-      - run: |
-          make wandboard_lancer_defconfig 
-          make
+      - name : Build 
+          run: |
+            make wandboard_lancer_defconfig 
+            make
