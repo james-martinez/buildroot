@@ -2,6 +2,7 @@ name: I.MX6 RootFS Build
 on: push
 jobs:
   login:
+    runs-on: [ubuntu-latest]
     steps:
       - name: Login to github
         uses: azure/docker-login@v1
